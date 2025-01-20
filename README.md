@@ -7,6 +7,6 @@ Xpenser is a command line interface to manage your finances. This tool is inspir
 Ensure you have [Rust installed](https://www.rust-lang.org/tools/install). Then run the following commands.
 
 ```bash
-$ cargo run -- add  
+$ cargo run -- add --description "Lunch" --amount 20  
 $ cargo run -- summary
 ```
