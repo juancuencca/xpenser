@@ -8,5 +8,5 @@ Ensure you have [Rust installed](https://www.rust-lang.org/tools/install). Then 
 
 ```bash
 $ cargo run -- add --description "Lunch" --amount 20  
-$ cargo run -- summary
+$ cargo run -- list
 ```
