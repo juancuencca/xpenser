@@ -1,7 +1,8 @@
 use crate::Action;
+use serde::{Serialize, Deserialize};
 use chrono::{DateTime, Local, Datelike};
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 struct Expense {
     id: u32,
     description: String,
@@ -29,7 +30,7 @@ impl Expense {
 }
 
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Serialize, Deserialize)]
 pub struct ExpenseTracker {
     expenses: Vec<Expense>,
     last_id: u32,
@@ -73,10 +74,17 @@ impl ExpenseTracker {
     }
 
     fn list_all(&self) -> String {
-        let mut msg = String::from("# ID  Date       Description  Amount\n");
+        let mut msg = String::from("# ID  Date         Amount     Description\n");
         
         for exp in &self.expenses {
-            msg.push_str(format!("# {}   {}  {}        ${}\n", exp.id, exp.created_at.format("%d/%m/%Y"), exp.description, exp.amount).as_str());
+            msg.push_str(
+                format!("# {}   {}   ${}        {}\n", 
+                    exp.id, 
+                    exp.created_at.format("%d/%m/%Y"), 
+                    exp.amount,
+                    exp.description, 
+                ).as_str()
+            );
         }
 
         msg
@@ -90,7 +98,11 @@ impl ExpenseTracker {
 
     fn summary_by_month(&self, month: u8) -> String {
         let months = ["January", "Febrary", "March", "May", "June", "July", "August", "September", "October", "November", "December"];
-        let total_expenses: f64 = self.expenses.iter().filter(|exp| exp.created_at.month() == month as u32).map(|exp| exp.amount).sum();
+        let mut total_expenses: f64 = self.expenses.iter().filter(|exp| exp.created_at.month() == month as u32).map(|exp| exp.amount).sum();
+
+        if total_expenses == 0.0 {
+            total_expenses = 0.0;
+        }
         
         format!("# Total expenses for {}: ${}", months[(month - 1) as usize], total_expenses)
     }
