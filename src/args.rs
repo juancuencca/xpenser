@@ -8,7 +8,7 @@ pub struct Args {
 }
 
 #[derive(Debug, Subcommand)]
-enum Action {
+pub enum Action {
     Add {
         #[arg(short, long)]
         description: String,
@@ -29,7 +29,7 @@ enum Action {
     },
     List,
     Summary {
-        #[arg(short, long)]
+        #[arg(short, long, value_parser = clap::value_parser!(u8).range(1..=12))]
         month: Option<u8>,
     },
 }
