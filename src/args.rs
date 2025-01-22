@@ -4,7 +4,7 @@ use clap::{Parser, Subcommand};
 #[command(name = "xpenser", about = "A CLI tool to track expenses.")]
 pub struct Args {
     #[command(subcommand)]
-    action: Action,
+    pub action: Action,
 }
 
 #[derive(Debug, Subcommand)]
